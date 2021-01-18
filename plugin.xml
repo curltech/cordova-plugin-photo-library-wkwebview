@@ -11,7 +11,6 @@ version="3.0.3" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="PhotoLibrary" >
                 <param name="android-package" value="com.terikon.cordova.photolibrary.PhotoLibrary"/>
-                <param name="onload" value="true" />
             </feature>
             <allow-navigation href="cdvphotolibrary:*" />
         </config-file>
@@ -32,7 +31,6 @@ version="3.0.3" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="
         <config-file target="config.xml" parent="/*">
             <feature name="PhotoLibrary">
                 <param name="ios-package" value="PhotoLibrary" />
-                <param name="onload" value="true" />
             </feature>
         </config-file>
         <preference name="PHOTO_LIBRARY_USAGE_DESCRIPTION" default=" "/>
