@@ -35,7 +35,6 @@ final class PhotoLibraryService {
     let cachingImageManager: PHCachingImageManager!
 
     let contentMode = PHImageContentMode.aspectFill // AspectFit: can be smaller, AspectFill - can be larger. TODO: resize to exact size
-
     var cacheActive = false
 
     let mimeTypes = [
@@ -141,7 +140,6 @@ final class PhotoLibraryService {
 //            self.cachingImageManager.startCachingImages(for: assets, targetSize: CGSize(width: options.thumbnailWidth, height: options.thumbnailHeight), contentMode: self.contentMode, options: self.imageRequestOptions)
 //            self.cacheActive = true
 //        }
-
         var chunk = [NSDictionary]()
         var chunkStartTime = NSDate()
         var chunkNum = 0
@@ -209,7 +207,7 @@ final class PhotoLibraryService {
 
             if(mediaType == "image") {
                 PHImageManager.default().requestImageData(for: asset, options: self.imageRequestOptions) {
-                    (imageData: Data?, dataUTI: String?, orientation: UIImageOrientation, info: [AnyHashable: Any]?) in
+                    (imageData: Data?, dataUTI: String?, orientation: UIImage.Orientation, info: [AnyHashable: Any]?) in
 
                     if(imageData == nil) {
                         completion(nil)
@@ -351,7 +349,7 @@ final class PhotoLibraryService {
             let asset = obj as! PHAsset
 
             PHImageManager.default().requestImageData(for: asset, options: self.imageRequestOptions) {
-                (imageData: Data?, dataUTI: String?, orientation: UIImageOrientation, info: [AnyHashable: Any]?) in
+                (imageData: Data?, dataUTI: String?, orientation: UIImage.Orientation, info: [AnyHashable: Any]?) in
 
                 guard let image = imageData != nil ? UIImage(data: imageData!) : nil else {
                     completion(nil)
@@ -383,7 +381,7 @@ final class PhotoLibraryService {
 
             if(mediaType == "image") {
                 PHImageManager.default().requestImageData(for: asset, options: self.imageRequestOptions) {
-                    (imageData: Data?, dataUTI: String?, orientation: UIImageOrientation, info: [AnyHashable: Any]?) in
+                    (imageData: Data?, dataUTI: String?, orientation: UIImage.Orientation, info: [AnyHashable: Any]?) in
 
                     if(imageData == nil) {
                         completion(nil)
@@ -488,7 +486,7 @@ final class PhotoLibraryService {
         }
 
         // Permission was manually denied by user, open settings screen
-        let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)
+        let settingsUrl = URL(string: UIApplication.openSettingsURLString)
         if let url = settingsUrl {
             UIApplication.shared.openURL(url)
             // TODO: run callback only when return ?
@@ -582,11 +580,9 @@ final class PhotoLibraryService {
             //                return
             //            }
             //            UISaveVideoAtPathToSavedPhotosAlbum(videoURL.relativePath!, nil, nil, nil)
-
             if !assetsLibrary.videoAtPathIs(compatibleWithSavedPhotosAlbum: videoURL) {
 
                 // TODO: try to convert to MP4 as described here?: http://stackoverflow.com/a/39329155/1691132
-
                 completion(nil, "Provided video is not compatible with Saved Photo album")
                 return
             }
@@ -718,15 +714,14 @@ final class PhotoLibraryService {
         //        let provider: CGDataProvider = CGImageGetDataProvider(image.CGImage)!
         //        let data = CGDataProviderCopyData(provider)
         //        return data;
-
         var data: Data?
         var mimeType: String?
 
         if (imageHasAlpha(image)){
-            data = UIImagePNGRepresentation(image)
+            data = image.pngData()
             mimeType = data != nil ? "image/png" : nil
         } else {
-            data = UIImageJPEGRepresentation(image, CGFloat(quality))
+            data = image.jpegData(compressionQuality: CGFloat(quality))
             mimeType = data != nil ? "image/jpeg" : nil
         }
 
