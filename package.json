@@ -1,7 +1,15 @@
 {
-  "name": "cordova-plugin-photo-library-wkwebview4curltech",
-  "version": "3.0.3-curltech",
+  "name": "cordova-plugin-photo-library-wkwebview-curltech",
+  "version": "3.0.3",
   "description": "Plugin that just gets photos from the gallery",
+  "cordova": {
+    "id": "cordova-plugin-photo-library-wkwebview-curltech",
+    "platforms": [
+      "android",
+      "ios",
+      "browser"
+    ]
+  },
   "main": "index.js",
   "scripts": {
     "test:android": "cordova-paramedic --platform android --plugin . --verbose",
